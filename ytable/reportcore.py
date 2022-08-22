@@ -303,7 +303,7 @@ def parse_binary(v):
 
 
 def as_python(columns, to_localtime=True):
-    def coerce(converters, _data):
+    def row_coerce(converters, _data):
         return tuple(func(_data[key]) for key, func in converters)
 
     identity = lambda v: v
@@ -338,11 +338,11 @@ def as_python(columns, to_localtime=True):
             return identity
 
     converters = [(x[0], column_converter(*x)) for x in columns]
-    return functools.partial(coerce, converters)
+    return functools.partial(row_coerce, converters)
 
 
 def as_client(columns, to_localtime=True):
-    def coerce(converters, _data):
+    def row_coerce(converters, _data):
         return tuple(func(_data[key]) for key, func in converters)
 
     identity = lambda v: v
@@ -368,4 +368,4 @@ def as_client(columns, to_localtime=True):
             return identity
 
     converters = [(x[0], column_converter(*x)) for x in columns]
-    return functools.partial(coerce, converters)
+    return functools.partial(row_coerce, converters)
